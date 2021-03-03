@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  dbIDBOOSTER:
+    hostname: "mydb"
+    image: "mysql:5.7"
+    restart_policy: "always"
+    container_name: "mydb_count"
+    environment:
+      - MYSQL_DATABASE=battleboat
+      - MYSQL_USER=battleuser
+      - MYSQL_PASSWORD=battlepass
+      - MYSQL_ROOT8PASSWORD=rootpwdIDBOOSTER
+    volumes:
+      - ./volumes/mysql_lib:/var/lib/mysql
+    ports:
+     - 3306:3306
+    networks:
+      - list_network
+
+  battleIDBOOSTER:
+    hostname: "mybattleboat"
+    image: "fake-backend:latest"
+    restart_policy: "always"
+    container_name: "mydbbattle_boat_count"
+    ports:
+      - 8181:3000
+    environment:
+      - DATABASE_HOST=dbIDBOOSTER
+      - DATABASE_PORT=3306
+      - DATABASE_USER=battleuser
+      - DATABASE_PASSWORD=battlepass
+      - DATABASE_NAME=battleboat
+    volumes:
+      - ./files/battleboat:/etc/backend/static
+    networks:
+      - list_network
+networks:
+  list_network:
+volumes:
+  data_vol:
