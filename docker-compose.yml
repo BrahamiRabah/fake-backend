@@ -3,7 +3,7 @@ services:
   dbIDBOOSTER:
     hostname: "mydb"
     image: "mysql:5.7"
-    restart_policy: "always"
+    restart: "always"
     container_name: "mydb_count"
     environment:
       - MYSQL_DATABASE=battleboat
@@ -20,7 +20,7 @@ services:
   battleIDBOOSTER:
     hostname: "mybattleboat"
     image: "fake-backend:latest"
-    restart_policy: "always"
+    restart: "always"
     container_name: "mydbbattle_boat_count"
     ports:
       - 8181:3000
@@ -34,6 +34,8 @@ services:
       - ./files/battleboat:/etc/backend/static
     networks:
       - list_network
+    depends_on:
+      - dbIDBOOSTER
 networks:
   list_network:
 volumes:
